@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+rabbitmq:
+  queue:
+    name: order_queue
+  exchange:
+    name: order_exchange
+  routing:
+    key: order_routing_key
