@@ -1,2 +1,6 @@
 server:
   port: 8081
+
+rabbitmq:
+  queue:
+    name: order_queue

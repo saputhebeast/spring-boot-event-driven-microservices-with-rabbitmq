@@ -16,37 +16,59 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    @Value("${rabbitmq.queue.name}")
-    private String queueName;
+    @Value("${rabbitmq.queue.name.order}")
+    private String orderQueueName;
 
     @Value("${rabbitmq.exchange.name}")
     private String exchangeName;
 
-    @Value("${rabbitmq.routing.key}")
-    private String routingKey;
+    @Value("${rabbitmq.routing.key.order}")
+    private String orderRoutingKey;
+
+    @Value("${rabbitmq.queue.name.email}")
+    private String emailQueueName;
+
+    @Value("${rabbitmq.routing.key.email}")
+    private String emailRoutingKey;
 
     /*
     * spring bean for order queue
     * */
     @Bean
     public Queue orderQueue() {
-        return new Queue(queueName);
+        return new Queue(orderQueueName);
+    }
+
+    /*
+     * spring bean for email queue
+     * */
+    @Bean
+    public Queue emailQueue() {
+        return new Queue(emailQueueName);
     }
 
     /*
     * spring bean for exchange
     * */
     @Bean
-    public TopicExchange orderExchange() {
+    public TopicExchange exchange() {
         return new TopicExchange(exchangeName);
     }
 
     /*
-    * spring bean for binding between exchange and queue using routing key
+    * spring bean for binding order between exchange and queue using routing key
     * */
     @Bean
     public Binding binding() {
-        return BindingBuilder.bind(orderQueue()).to(orderExchange()).with(routingKey);
+        return BindingBuilder.bind(orderQueue()).to(exchange()).with(orderRoutingKey);
+    }
+
+    /*
+     * spring bean for binding email between exchange and queue using routing key
+     * */
+    @Bean
+    public Binding emailBinding() {
+        return BindingBuilder.bind(emailQueue()).to(exchange()).with(emailRoutingKey);
     }
 
     /*

@@ -3,8 +3,12 @@ server:
 
 rabbitmq:
   queue:
-    name: order_queue
+    name:
+      order: order_queue
+      email: email_queue
   exchange:
     name: order_exchange
   routing:
-    key: order_routing_key
+    key:
+      order: order_routing_key
+      email: email_routing_key
